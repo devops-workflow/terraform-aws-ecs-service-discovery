@@ -2,8 +2,8 @@
 # ECS services service discovery using Route53 auto-naming
 #
 
-# tf setup namespace
 # lambda add/remove instances to service
+# Put create service in ecs-service module as an option
 
 # https://www.terraform.io/docs/providers/aws/r/service_discovery_private_dns_namespace.html
 
@@ -19,7 +19,6 @@ module "enable_public_namespace" {
   value   = "${var.enable_public_namespace}"
 }
 
-# TODO: option to use private to public namespace
 resource "aws_service_discovery_private_dns_namespace" "this" {
   count       = "${module.enabled.value && ! module.enable_public_namespace.value ? 1 : 0}"
   name        = "${var.namespace}"
@@ -27,5 +26,11 @@ resource "aws_service_discovery_private_dns_namespace" "this" {
   vpc         = "${var.vpc_id}"
 }
 
-# id, arn, hosted_zone
+#Attributes: id, arn, hosted_zone
+resource "aws_service_discovery_public_dns_namespace" "this" {
+  count       = "${module.enabled.value && module.enable_public_namespace.value ? 1 : 0}"
+  name        = "${var.namespace}"
+  description = "Service Discovery"
+}
 
+#Attributes: id, arn, hosted_zone
