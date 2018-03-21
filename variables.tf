@@ -8,6 +8,15 @@ variable "enable_public_namespace" {
   default     = false
 }
 
+variable "environment" {
+  description = "Deploy environment name"
+}
+
+variable "lambda_name" {
+  description = "Name of lambda"
+  default     = "service-discovery"
+}
+
 variable "namespace" {
   description = "Route53 service discovery namespace name"
 }
