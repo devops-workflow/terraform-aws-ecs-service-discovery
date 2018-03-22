@@ -153,10 +153,8 @@ resource "aws_lambda_permission" "this" {
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.this.function_name}"
   principal     = "events.amazonaws.com"
-
-  #source_account = "111122223333"
-  source_arn = "${aws_cloudwatch_event_rule.this.arn}"
-  qualifier  = "${aws_lambda_alias.this.name}"
+  source_arn    = "${aws_cloudwatch_event_rule.this.arn}"
+  qualifier     = "${aws_lambda_alias.this.name}"
 }
 
 //
@@ -184,10 +182,9 @@ PATTERN
 resource "aws_cloudwatch_event_target" "this" {
   rule      = "${aws_cloudwatch_event_rule.this.name}"
   target_id = "EcsTaskStateChangeSendToLambda"
-  arn       = "${aws_lambda_function.this.arn}"
+  arn       = "${aws_lambda_alias.this.arn}"
 
   #role_arn
 }
 
 # Missing something for trigger to show up in lambda
-
